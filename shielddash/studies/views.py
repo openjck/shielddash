@@ -48,6 +48,8 @@ def study_detail(request, study_id):
     data = {
         'study': study.name,
         'channels': {},
+        'startTime': study.start_time,
+        'endTime': study.end_time,
     }
     for row in rows:
         channel = row.pop('channel')

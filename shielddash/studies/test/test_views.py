@@ -29,8 +29,8 @@ def create_test_study():
     return Study.objects.create(
         name=u'test study',
         description=u'some description',
-        start_time=start,
-        end_time=end,
+        start_time=start.replace(microsecond=0),
+        end_time=end.replace(microsecond=0),
     )
 
 
@@ -141,6 +141,8 @@ class TestStudyDetailView(TestCase):
                          sorted(['release', 'beta', 'aurora', 'nightly']))
         self.assertEqual(sorted(data['channels']['release'].keys()),
                          sorted(['aggressive', 'medium', 'weak', 'ut']))
+        self.assertEqual(data['startTime'], iso(self.study.start_time))
+        self.assertEqual(data['endTime'], iso(self.study.end_time))
 
     def test_no_auth(self):
         response = self.client.get(self.url)
